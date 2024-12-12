@@ -3,21 +3,20 @@ import express from "express";
 import authRoutes from "./routes/auth.route.js";
 import { connectDB } from "./lib/db.js";
 import cookieParser from "cookie-parser";
+import messageRoutes from "./routes/message.route.js";
 
-// Load environment variables from .env file
-dotenv.config();
+dotenv.config(); // Load environment variables from .env file
 
 const app = express();
-const PORT = process.env.PORT || 5000;  // Use a default port if not provided in .env
+const PORT = process.env.PORT || 5000; // Use a default port if not provided in .env
 
-// Middleware to parse incoming JSON requests
-app.use(express.json());  // Add this line to parse JSON body requests
+app.use(express.json()); // Middleware to parse incoming JSON requests
 
-// Middleware to parse cookies from the request
-app.use(cookieParser());
+app.use(cookieParser()); // Middleware to parse cookies from the request
 
-// Use the authentication routes
-app.use("/api/auth", authRoutes);
+app.use("/api/auth", authRoutes); // Use the authentication routes
+
+app.use("/api/messages", messageRoutes); // Use the message routes
 
 // Start the server and connect to the database
 app.listen(PORT, () => {
