@@ -29,6 +29,7 @@ export const useAuthStore = create((set, get) => ({
       set({ isCheckingAuth: false });
     }
   },
+
   // Function to sign up a user
   signup: async (data) => {
     // Set the signing up state to true
@@ -46,13 +47,46 @@ export const useAuthStore = create((set, get) => ({
       // Connect the user to the socket
       get().connectSocket();
     } catch (error) {
-      // Display an error message if signup fails
-      toast.error(error.response.data.message);
+      // Handle error gracefully using optional chaining to avoid undefined errors
+      const errorMessage =
+        error?.response?.data?.message ||
+        "An error occurred during signup. Please try again.";
+      toast.error(errorMessage);
     } finally {
       // Reset the signing up state to false
       set({ isSigningUp: false });
     }
   },
+
+  // Function to log in a user
+  login: async (data) => {
+    // Set the logging in state to true
+    set({ isLoggingIn: true });
+
+    try {
+      // Make a POST request to the login endpoint with the user data
+      const res = await axiosInstance.post("/auth/login", data);
+
+      // Set the authenticated user with the response data
+      set({ authUser: res.data });
+
+      // Display a success message
+      toast.success("Logged in successfully");
+
+      // Connect the user to the socket
+      get().connectSocket();
+    } catch (error) {
+      // Handle error gracefully using optional chaining to avoid undefined errors
+      const errorMessage =
+        error?.response?.data?.message ||
+        "An error occurred during login. Please try again.";
+      toast.error(errorMessage);
+    } finally {
+      // Reset the logging in state to false
+      set({ isLoggingIn: false });
+    }
+  },
+
   // Function to log out a user
   logout: async () => {
     set({ isLoggingOut: true });
@@ -68,7 +102,11 @@ export const useAuthStore = create((set, get) => ({
       // Disconnect the user from the socket
       get().disconnectSocket();
     } catch (error) {
-      toast.error(error.response.data.message);
+      // Handle error gracefully using optional chaining to avoid undefined errors
+      const errorMessage =
+        error?.response?.data?.message ||
+        "An error occurred during logout. Please try again.";
+      toast.error(errorMessage);
     } finally {
       set({ isLoggingOut: false });
     }
