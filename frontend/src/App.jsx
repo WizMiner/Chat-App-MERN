@@ -9,10 +9,12 @@ import { useAuthStore } from "./store/useAuthStore";
 import { useEffect } from "react";
 import { Loader } from "lucide-react";
 import { Toaster } from "react-hot-toast";
+import { useThemeStore } from "./store/useThemeStore";
 
 const App = () => {
   // Get the current user and the checkAuth function from the auth store
   const { authUser, checkAuth, isCheckingAuth, onlineUsers } = useAuthStore();
+  const { theme } = useThemeStore();
 
   // Console log the online users
   console.log({ onlineUsers });
@@ -36,7 +38,7 @@ const App = () => {
 
   // Render the app
   return (
-    <div>
+    <div data-theme={theme}>
       <Navbar />
 
       <Routes>
