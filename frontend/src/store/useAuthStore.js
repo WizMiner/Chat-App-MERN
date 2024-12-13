@@ -111,4 +111,33 @@ export const useAuthStore = create((set, get) => ({
       set({ isLoggingOut: false });
     }
   },
+  /**
+   * Function to update the user's profile information.
+   * @param {Object} data - The user data to be updated.
+   * @returns {Promise} - A promise that resolves when the request is completed.
+   */
+  updateProfile: async (data) => {
+    set({ isUpdatingProfile: true });
+    try {
+      // Make a PUT request to the update-profile endpoint with the user data
+      const res = await axiosInstance.put("/auth/update-profile", data);
+
+      // Set the authenticated user state with the response data
+      set({ authUser: res.data });
+
+      // Display a success message
+      toast.success("Profile updated successfully");
+    } catch (error) {
+      console.log("error in update profile:", error);
+
+      // Handle error gracefully using optional chaining to avoid undefined errors
+      const errorMessage =
+        error?.response?.data?.message ||
+        "An error occurred during profile update. Please try again.";
+      toast.error(errorMessage);
+    } finally {
+      // Reset the updating profile state to false
+      set({ isUpdatingProfile: false });
+    }
+  },
 }));
