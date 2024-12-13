@@ -8,7 +8,7 @@ import SettingsPage from "./pages/SettingsPage";
 import { useAuthStore } from "./store/useAuthStore";
 import { useEffect } from "react";
 import { Loader } from "lucide-react";
-
+import { Toaster } from "react-hot-toast";
 
 const App = () => {
   // Get the current user and the checkAuth function from the auth store
@@ -58,6 +58,7 @@ const App = () => {
           element={authUser ? <ProfilePage /> : <Navigate to="/login" />}
         />
       </Routes>
+      <Toaster /> {/* Notifications Toaster */}
     </div>
   );
 };
