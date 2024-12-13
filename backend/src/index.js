@@ -4,6 +4,7 @@ import authRoutes from "./routes/auth.route.js";
 import { connectDB } from "./lib/db.js";
 import cookieParser from "cookie-parser";
 import messageRoutes from "./routes/message.route.js";
+import cors from "cors";
 
 dotenv.config(); // Load environment variables from .env file
 
@@ -13,6 +14,12 @@ const PORT = process.env.PORT || 5000; // Use a default port if not provided in 
 app.use(express.json()); // Middleware to parse incoming JSON requests
 
 app.use(cookieParser()); // Middleware to parse cookies from the request
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    credentials: true,
+  })
+); // Middleware to enable CORS
 
 app.use("/api/auth", authRoutes); // Use the authentication routes
 
