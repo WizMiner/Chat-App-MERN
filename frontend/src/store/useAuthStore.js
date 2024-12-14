@@ -1,6 +1,10 @@
 import { create } from "zustand";
 import { axiosInstance } from "../lib/axios.js";
 import toast from "react-hot-toast";
+import { io } from "socket.io-client";
+
+const BASE_URL =
+  import.meta.env.MODE === "development" ? "http://localhost:5001" : "/";
 
 export const useAuthStore = create((set, get) => ({
   authUser: null,
@@ -139,5 +143,37 @@ export const useAuthStore = create((set, get) => ({
       // Reset the updating profile state to false
       set({ isUpdatingProfile: false });
     }
+  },
+
+  /**
+   * Establishes a socket connection for the authenticated user.
+   * If the user is not authenticated or already connected, the function returns early.
+   * It sets up the socket with the user's ID and listens for online user updates.
+   */
+  connectSocket: () => {
+    // Retrieve the authenticated user
+    const { authUser } = get();
+    // Return early if the user is not authenticated or the socket is already connected
+    if (!authUser || get().socket?.connected) return;
+
+    // Create a new socket instance with the user ID as a query parameter
+    const socket = io(BASE_URL, {
+      query: {
+        userId: authUser._id,
+      },
+    });
+    // Connect the socket
+    socket.connect();
+
+    // Update the socket state in the store
+    set({ socket: socket });
+
+    // Set up a listener for the "getOnlineUsers" event to update the online users list
+    socket.on("getOnlineUsers", (userIds) => {
+      set({ onlineUsers: userIds });
+    });
+  },
+  disconnectSocket: () => {
+    if (get().socket?.connected) get().socket.disconnect();
   },
 }));
