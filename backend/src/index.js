@@ -1,32 +1,42 @@
-import dotenv from "dotenv";
 import express from "express";
-import authRoutes from "./routes/auth.route.js";
-import { connectDB } from "./lib/db.js";
+import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
-import messageRoutes from "./routes/message.route.js";
 import cors from "cors";
 
-dotenv.config(); // Load environment variables from .env file
+import path from "path";
 
-const app = express();
-const PORT = process.env.PORT || 5000; // Use a default port if not provided in .env
+import { connectDB } from "./lib/db.js";
 
-app.use(express.json()); // Middleware to parse incoming JSON requests
+import authRoutes from "./routes/auth.route.js";
+import messageRoutes from "./routes/message.route.js";
+import { app, server } from "./lib/socket.js";
 
-app.use(cookieParser()); // Middleware to parse cookies from the request
+dotenv.config();
+
+const PORT = process.env.PORT;
+const __dirname = path.resolve();
+
+app.use(express.json());
+app.use(cookieParser());
 app.use(
   cors({
     origin: "http://localhost:5173",
     credentials: true,
   })
-); // Middleware to enable CORS
+);
 
-app.use("/api/auth", authRoutes); // Use the authentication routes
+app.use("/api/auth", authRoutes);
+app.use("/api/messages", messageRoutes);
 
-app.use("/api/messages", messageRoutes); // Use the message routes
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(path.join(__dirname, "../frontend/dist")));
 
-// Start the server and connect to the database
-app.listen(PORT, () => {
-  console.log(`Server is running on PORT: ${PORT}`);
+  app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname, "../frontend", "dist", "index.html"));
+  });
+}
+
+server.listen(PORT, () => {
+  console.log("server is running on PORT:" + PORT);
   connectDB();
 });

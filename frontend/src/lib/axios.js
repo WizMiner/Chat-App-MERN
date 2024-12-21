@@ -1,11 +1,10 @@
 import axios from "axios";
 
-// Creating an instance of Axios with default configurations
 export const axiosInstance = axios.create({
-  // Base URL for all API requests
-  baseURL: "http://localhost:5000/api",
-  
-  // Ensures that cookies are included in cross-site requests
+  baseURL:
+    import.meta.env.MODE === "development"
+      ? "http://localhost:5001/api"
+      : "/api",
   withCredentials: true,
 });
 

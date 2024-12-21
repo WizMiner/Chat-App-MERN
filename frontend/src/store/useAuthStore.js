@@ -4,7 +4,7 @@ import toast from "react-hot-toast";
 import { io } from "socket.io-client";
 
 const BASE_URL =
-  import.meta.env.MODE === "development" ? "http://localhost:5000" : "/";
+  import.meta.env.MODE === "development" ? "http://localhost:5001" : "/";
 
 export const useAuthStore = create((set, get) => ({
   authUser: null,
@@ -51,11 +51,7 @@ export const useAuthStore = create((set, get) => ({
       // Connect the user to the socket
       get().connectSocket();
     } catch (error) {
-      // Handle error gracefully using optional chaining to avoid undefined errors
-      const errorMessage =
-        error?.response?.data?.message ||
-        "An error occurred during signup. Please try again.";
-      toast.error(errorMessage);
+      toast.error(error.response.data.message);
     } finally {
       // Reset the signing up state to false
       set({ isSigningUp: false });
@@ -80,11 +76,7 @@ export const useAuthStore = create((set, get) => ({
       // Connect the user to the socket
       get().connectSocket();
     } catch (error) {
-      // Handle error gracefully using optional chaining to avoid undefined errors
-      const errorMessage =
-        error?.response?.data?.message ||
-        "An error occurred during login. Please try again.";
-      toast.error(errorMessage);
+      toast.error(error.response.data.message);
     } finally {
       // Reset the logging in state to false
       set({ isLoggingIn: false });
@@ -93,8 +85,6 @@ export const useAuthStore = create((set, get) => ({
 
   // Function to log out a user
   logout: async () => {
-    set({ isLoggingOut: true });
-
     try {
       // Make a POST request to the logout endpoint
       await axiosInstance.post("/auth/logout");
@@ -106,13 +96,7 @@ export const useAuthStore = create((set, get) => ({
       // Disconnect the user from the socket
       get().disconnectSocket();
     } catch (error) {
-      // Handle error gracefully using optional chaining to avoid undefined errors
-      const errorMessage =
-        error?.response?.data?.message ||
-        "An error occurred during logout. Please try again.";
-      toast.error(errorMessage);
-    } finally {
-      set({ isLoggingOut: false });
+      toast.error(error.response.data.message);
     }
   },
   /**
@@ -133,12 +117,7 @@ export const useAuthStore = create((set, get) => ({
       toast.success("Profile updated successfully");
     } catch (error) {
       console.log("error in update profile:", error);
-
-      // Handle error gracefully using optional chaining to avoid undefined errors
-      const errorMessage =
-        error?.response?.data?.message ||
-        "An error occurred during profile update. Please try again.";
-      toast.error(errorMessage);
+      toast.error(error.response.data.message);
     } finally {
       // Reset the updating profile state to false
       set({ isUpdatingProfile: false });
