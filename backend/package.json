@@ -1,15 +1,16 @@
 {
   "name": "backend",
   "version": "1.0.0",
+  "description": "A chat application backend with authentication, real-time messaging, and cloudinary integration.",
   "main": "index.js",
   "scripts": {
+    "start": "node src/index.js",
     "dev": "nodemon src/index.js"
   },
   "keywords": [],
   "author": "",
   "type": "module",
   "license": "ISC",
-  "description": "",
   "dependencies": {
     "bcrypt": "^5.1.1",
     "bcryptjs": "^2.4.3",
