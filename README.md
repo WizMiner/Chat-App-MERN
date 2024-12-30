@@ -2,21 +2,36 @@
 
 ![Demo App](/frontend/public/screenshot-for-readme.png)
 
+## Live Demo 🌐
 
-Highlights:
+Check out the live version of the app here: [Chat App Website](https://chat-uk7r.onrender.com)  
 
-- 🌟 Tech stack: MERN + Socket.io + TailwindCSS + Daisy UI
-- 🎃 Authentication && Authorization with JWT
-- 👾 Real-time messaging with Socket.io
-- 🚀 Online user status
-- 👌 Global state management with Zustand
-- 🐞 Error handling both on the server and on the client
-- ⭐ At the end Deployment like a pro for FREE!
-- ⏳ And much more!
+You can also copy the link below to share it:
 
-### Setup .env file
+```
+https://chat-uk7r.onrender.com
+```
 
-```js
+---
+
+## Highlights 🚀
+
+- **🌟 Stack:** MERN + Socket.io + TailwindCSS + Daisy UI  
+- **🎃 Authentication & Authorization** with JWT  
+- **👾 Real-time messaging** with Socket.io  
+- **🚀 Online user status**  
+- **👌 Global state management** with Zustand  
+- **🐞 Error handling** on both the server and the client  
+- **⭐ Deployment like a pro for FREE!**  
+- **⏳ And much more!**  
+
+---
+
+## Setup `.env` File 🛠️
+
+Make sure to create a `.env` file in the `backend` directory and include the following variables:
+
+```env
 MONGODB_URI=...
 PORT=5001
 JWT_SECRET=...
@@ -28,14 +43,24 @@ CLOUDINARY_API_SECRET=...
 NODE_ENV=development
 ```
 
-### Build the app
+---
 
-```shell
+## Build the App 🏗️
+
+To build the application, run the following command:
+
+```bash
 npm run build
 ```
 
-### Start the app
+---
 
-```shell
+## Start the App 🚀
+
+To start the application, use the command:
+
+```bash
 npm start
 ```
+
+---
